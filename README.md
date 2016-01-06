@@ -102,11 +102,15 @@ Name | Default | Meaning
 --- | --- | ---
 dbtype | mongo | You can switch between mongo,cloudant,cassandra for datastore choices. When running on Bluemix, dbtype is automactially discovered from the service the application is bound to.
 AUTH_SERVICE |  | By default, there is only one main NodeJS application for all logics. When defined, in the format of host:port, it enables Micro-Service mode, main NodeJS application delegates to authorization service NodeJS application hosted on host:port. 
-enableHystrix | false | setting it to true will enable hystrix stream available at /rest/api/hystrix.stream
+enableHystrix | false | when set to true, it will enable hystrix stream available at /rest/api/hystrix.stream
 MONGO_URL||Mongo database URL. Take precedence over other settings
 CLOUDANT_URL||Cloudant database URL. Take precedence over other settings
 CASSANDRA_CP||Cassandra Contact Points. Take precedence over other settings
 CASSANDRA_KS||Cassandra keyspace. Take precedence over other settings
+ZIPKIN_ENABLE|false|when set to true, it will enable ZipKin integration
+ZIPKIN_HOST|| zipkin collector scribe host. Take precedence over other settings
+ZIPKIN_PORT|| zipkin collector scribe port. Take precedence over other settings
+
 
 ### Configuration for Runtime
 
@@ -127,7 +131,8 @@ cloudant_httpclient.soTimeout | 5000 | Cloudant http client socket timeout
 cloudant_httpclient.connectionTimeout | 5000 | Cloudant http client connection timeout
 cassandra_contactPoints||Cassandra contact points
 cassandra_keyspace|acmeair_keyspace|Cassandra keyspace
-
+zipkin_host|127.0.0.1 | zipkin collector scribe host
+zipkin_port|9410 | zipkin collector scribe port
 
 * When running on Bluemix, datasource url will be read from bound service information.
 * For Cloudant, you need to [follow instruction](document/DDL/cloudant.ddl) to create database and define search index.
