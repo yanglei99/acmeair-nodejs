@@ -51,24 +51,35 @@ Assume MongoDB started on 127.0.0.1:27017
 		
 ### Run Acmeair in Micro-Service on Local
 
-	node authservice-app.js
+	node authservice_app.js
 	set AUTH_SERVICE=localhost:9443 or export AUTH_SERVICE=localhost:9443
 	node app.js
 	
 ### Run Acmeair in Micro-Service with Netflix Hystrix Stream enabled on Local
 
-	node authservice-app.js
+	node authservice_app.js
 	set AUTH_SERVICE=localhost:9443 or export AUTH_SERVICE=localhost:9443
 	set enableHystrix=true or export enableHystrix=true
 	
 	node app.js
+
+
+### Enable ZipKin tracing for all the scenarios
+
+	export ZIPKIN_ENABLE=true
+	export ZIPKIN_HOST= your zipkin collector host
 	
+#### Known issue 
+
+* [If you hit ipv6 issue](https://github.com/tryfer/node-tryfer/pull/38), you can work around it by clone the branch to replace your local node-modules
+
+* Dependency graph is not calculated.
 	
 ### Access Application 
 
 	http://localhost:9080/
 	
-	Load Database 
+	Load the database (under Configure the Acme Air environment)
 		preload 10k customers uid[0..9999]@email.com:password, 5 days' flights.  Defined in loader/loader-settings.json
 	Login
 	Flights

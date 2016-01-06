@@ -27,16 +27,15 @@ module.exports = function (settings) {
 	var logger = log4js.getLogger('acmeairhttp');
 	logger.setLevel(settings.loggerLevel);
 	
-    module.createSession = function (userid, callback /* (error, sessionId) */){
+    module.createSession = function (requestHeader, userid, callback /* (error, sessionId) */){
+ 		requestHeader['Content-Type']='application/json'
 		var path = contextRoot+"/authtoken/byuserid/" + userid;
 	     	var options = {
 			hostname: hostAndPort[0],
 		 	port: hostAndPort[1] || 80,
 		    	path: path,
 		    	method: "POST",
-		    	headers: {
-		    	      'Content-Type': 'application/json'
-		    	}
+		    	headers: requestHeader
 	     }
 	
 	     logger.debug('createSession  options:'+JSON.stringify(options));
@@ -63,7 +62,8 @@ module.exports = function (settings) {
     }
 
 
-	module.validateSession = function (sessionid, callback /* (error, userid) */){
+	module.validateSession = function (requestHeader, sessionid, callback /* (error, userid) */){
+ 		requestHeader['Content-Type']='application/json'
 
 		var path = contextRoot+"/authtoken/" + sessionid;
 	     	var options = {
@@ -71,9 +71,7 @@ module.exports = function (settings) {
 		 	port: hostAndPort[1],
 		    	path: path,
 		    	method: "GET",
-		    	headers: {
-		    	      'Content-Type': 'application/json'
-		    	}
+		    	headers: requestHeader
 	    }
 	
 	    logger.debug('validateSession request:'+JSON.stringify(options));
@@ -97,16 +95,15 @@ module.exports = function (settings) {
 	   	request.end();
 	}
 
-	module.invalidateSession = function ( sessionid, callback /* (error) */){
+	module.invalidateSession = function (requestHeader, sessionid, callback /* (error) */){
+ 		 requestHeader['Content-Type']='application/json'
 	     var path = contextRoot+"/authtoken/" + sessionid;
 	     var options = {
 			hostname: hostAndPort[0],
 		 	port: hostAndPort[1],
 		    	path: path,
 		    	method: "DELETE",
-		    	headers: {
-		    	      'Content-Type': 'application/json'
-		    	}
+		    	headers: requestHeader
 	     }
 	     logger.debug('invalidateSession request:'+JSON.stringify(options));
 	      var request = http.request(options, function(response){

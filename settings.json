@@ -2,6 +2,9 @@
 	"port":9080,
 	"contextRoot": "/rest/api",
 		
+	"zipkin_port": 9410,
+	"zipkin_host": "127.0.0.1",
+
 	"authservice_port": 9443,
 	"authContextRoot": "/acmeair-auth-service/rest/api",
 		

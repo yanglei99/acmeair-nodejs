@@ -14,7 +14,7 @@
 * limitations under the License.
 *******************************************************************************/
 
-module.exports = function (dbtype, authService, settings) {
+module.exports = function (dbtype, authService, settings, zipkin) {
     var module = {};
 	var uuid = require('node-uuid');
 	var log4js = require('log4js');
@@ -51,7 +51,11 @@ module.exports = function (dbtype, authService, settings) {
 			return;
 		}
 	
-		validateSession(sessionid, function(err, customerid) {
+		var requestHeader={}
+		if (zipkin)
+			requstHeader=zipkin.toRequestHeader(req, requestHeader);
+		
+		validateSession(requestHeader,sessionid, function(err, customerid) {
 			if (err) {
 				logger.debug('checkForValidCookie - system error validating session so returning 500');
 				res.sendStatus(500);
@@ -90,7 +94,11 @@ module.exports = function (dbtype, authService, settings) {
 				res.sendStatus(403);
 			}
 			else {
-				createSession(login, function(error, sessionid) {
+				var requestHeader={}
+				if (zipkin)
+					requstHeader=zipkin.toRequestHeader(req, requestHeader);
+				
+				createSession(requestHeader,login, function(error, sessionid) {
 					if (error) {
 						logger.info(error);
 						res.send(500, error);
@@ -108,7 +116,11 @@ module.exports = function (dbtype, authService, settings) {
 		
 		var sessionid = req.cookies.sessionid;
 		var login = req.body.login;
-		invalidateSession(sessionid, function(err) {
+		var requestHeader={}
+		if (zipkin)
+			requstHeader=zipkin.toRequestHeader(req, requestHeader);
+		
+		invalidateSession(requestHeader,sessionid, function(err) {
 			res.cookie('sessionid', '');
 			res.send('logged out');
 		});
@@ -355,9 +367,9 @@ module.exports = function (dbtype, authService, settings) {
 		});
 	};
 
-	function createSession(customerId, callback /* (error, sessionId) */) {
+	function createSession(requestHeader, customerId, callback /* (error, sessionId) */) {
 		if (authService){
-			authService.createSession(customerId,callback);
+			authService.createSession(requestHeader, customerId,callback);
 			return;
 		}
 		var now = new Date();
@@ -371,9 +383,9 @@ module.exports = function (dbtype, authService, settings) {
 		});
 	}
 
-	function validateSession(sessionId, callback /* (error, userid) */) {
+	function validateSession(requestHeader, sessionId, callback /* (error, userid) */) {
 		if (authService){
-		     authService.validateSession(sessionId,callback);
+		     authService.validateSession(requestHeader,sessionId,callback);
 		     return;
 		}
 		var now = new Date();
@@ -405,9 +417,9 @@ module.exports = function (dbtype, authService, settings) {
 		dataaccess.findBy(module.dbNames.bookingName, {'customerId':username},callback)
 	}
 
-	function invalidateSession(sessionid, callback /* error */) {
+	function invalidateSession(requestHeader ,sessionid, callback /* error */) {
 		if (authService){
-			authService.invalidateSession(sessionid,callback);
+			authService.invalidateSession(requestHeader,sessionid,callback);
 		    return;
 		}
 		  

@@ -25,7 +25,7 @@ logger.setLevel(settings.loggerLevel);
 
 // disable process.env.PORT for now as it cause problem on mesos slave
 var port = (process.env.VMC_APP_PORT || process.env.VCAP_APP_PORT || settings.port);
-var host = (process.env.VCAP_APP_HOST || 'localhost');
+var host = (process.env.VCAP_APP_HOST || '127.0.0.1');
 
 logger.info("host:port=="+host+":"+port);
 
@@ -62,9 +62,6 @@ if(process.env.VCAP_SERVICES){
 }
 logger.info("db type=="+dbtype);
 
-var routes = new require('./routes/index.js')(dbtype, authService,settings);
-var loader = new require('./loader/loader.js')(routes, settings);
-
 // Setup express with 4.0.0
 
 var app = express();
@@ -72,6 +69,33 @@ var morgan         = require('morgan');
 var bodyParser     = require('body-parser');
 var methodOverride = require('method-override');
 var cookieParser = require('cookie-parser')
+
+// enabled zipkin or not
+
+var enableZipkin = process.env.ENABLE_ZIPKIN
+var zipkin
+if (enableZipkin == "true")
+{
+       var zport = (process.env.ZIPKIN_PORT || settings.zipkin_port);
+       var zhost = (process.env.ZIPKIN_HOST || settings.zipkin_host);
+       logger.info("zipkin collector host:port=="+zhost+":"+zport);
+	 
+       var zipkin = require("express-zipkin").client;
+       zipkin.start({
+         scribeClientAddress: zhost
+         , scribeClientPort: zport
+         , rpcName: "acmeair-nodejs-web"
+         , scribeStoreName: "zipkin"
+         , maxTraces: 50
+         , serverAddress: host
+         , serverPort: port
+       });
+       app.all(settings.contextRoot+"/*", zipkin.trace);
+}
+
+var routes = new require('./routes/index.js')(dbtype, authService,settings, zipkin);
+var loader = new require('./loader/loader.js')(routes, settings);
+
 
 app.use(express.static(__dirname + '/public'));     	// set the static files location /public/img will be /img for users
 if (settings.useDevLogger)

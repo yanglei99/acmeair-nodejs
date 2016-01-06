@@ -21,7 +21,7 @@ var logger = log4js.getLogger('authservice_app');
 logger.setLevel(settings.loggerLevel);
 
 var port = (process.env.VMC_APP_PORT || process.env.VCAP_APP_PORT || settings.authservice_port);
-var host = (process.env.VCAP_APP_HOST || 'localhost');
+var host = (process.env.VCAP_APP_HOST || '127.0.0.1');
 
 logger.info("host:port=="+host+":"+port);
 
@@ -45,6 +45,30 @@ var routes = new require('./authservice/routes/index.js')(dbtype,settings);
 var express    = require('express'); 		
 var app        = express(); 				
 var morgan         = require('morgan');
+
+//enabled zipkin or not
+
+var enableZipkin = process.env.ENABLE_ZIPKIN
+var zipkin
+if (enableZipkin == "true")
+{
+       var zport = (process.env.ZIPKIN_PORT || settings.zipkin_port);
+       var zhost = (process.env.ZIPKIN_HOST || settings.zipkin_host);
+       logger.info("zipkin collector host:port=="+zhost+":"+zport);
+	 
+       var zipkin = require("express-zipkin").client;
+       zipkin.start({
+         scribeClientAddress: zhost
+         , scribeClientPort: zport
+         , rpcName: "acmeair-nodejs-auth"
+         , scribeStoreName: "zipkin"
+         , maxTraces: 50
+         , serverAddress: host
+         , serverPort: port
+       });
+       app.all(settings.authContextRoot+'/authtoken/*', zipkin.trace);
+}
+
 
 if (settings.useDevLogger)
 	app.use(morgan('dev'));                     		// log every request to the console

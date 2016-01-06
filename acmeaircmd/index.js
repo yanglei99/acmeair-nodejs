@@ -23,29 +23,29 @@ module.exports = function (authService,settings) {
 		hystrix.hystrixStream(request, response);
 	}
 
-	module.createSession = function(userid, callback /* (error, sessionId) */){
+	module.createSession = function(requestHeader, userid, callback /* (error, sessionId) */){
 		command.getCommand("createSession", authService.createSession, function (error, cmd){
 			if (error) callback (error, null);
 			else{
-				cmd.execute(userid, callback);
+				cmd.execute(requestHeader,userid, callback);
 			}
 		})
 	}
 
-	module.validateSession = function (sessionid, callback /* (error, userid) */){
+	module.validateSession = function (requestHeader, sessionid, callback /* (error, userid) */){
 		command.getCommand("validateSession", authService.validateSession, function (error, cmd){
 			if (error) callback (error, null);
 			else{
-				cmd.execute(sessionid, callback);
+				cmd.execute(requestHeader, sessionid, callback);
 			}
 		})
 	}
 	
-	module.invalidateSession  = function ( sessionid, callback /* (error) */){
+	module.invalidateSession  = function (requestHeader, sessionid, callback /* (error) */){
 		command.getCommand("invalidateSession", authService.invalidateSession, function (error, cmd){
 			if (error) callback (error, null);
 			else{
-				cmd.execute(sessionid, callback);
+				cmd.execute(requestHeader,sessionid, callback);
 			}
 		})
 	}
