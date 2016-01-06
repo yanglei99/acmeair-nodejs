@@ -51,11 +51,7 @@ module.exports = function (dbtype, authService, settings, zipkin) {
 			return;
 		}
 	
-		var requestHeader={}
-		if (zipkin)
-			requstHeader=zipkin.toRequestHeader(req, requestHeader);
-		
-		validateSession(requestHeader,sessionid, function(err, customerid) {
+		validateSession(getHeader(req),sessionid, function(err, customerid) {
 			if (err) {
 				logger.debug('checkForValidCookie - system error validating session so returning 500');
 				res.sendStatus(500);
@@ -94,11 +90,7 @@ module.exports = function (dbtype, authService, settings, zipkin) {
 				res.sendStatus(403);
 			}
 			else {
-				var requestHeader={}
-				if (zipkin)
-					requstHeader=zipkin.toRequestHeader(req, requestHeader);
-				
-				createSession(requestHeader,login, function(error, sessionid) {
+				createSession(getHeader(req),login, function(error, sessionid) {
 					if (error) {
 						logger.info(error);
 						res.send(500, error);
@@ -116,11 +108,7 @@ module.exports = function (dbtype, authService, settings, zipkin) {
 		
 		var sessionid = req.cookies.sessionid;
 		var login = req.body.login;
-		var requestHeader={}
-		if (zipkin)
-			requstHeader=zipkin.toRequestHeader(req, requestHeader);
-		
-		invalidateSession(requestHeader,sessionid, function(err) {
+		invalidateSession(getHeader(req),sessionid, function(err) {
 			res.cookie('sessionid', '');
 			res.send('logged out');
 		});
@@ -341,6 +329,19 @@ module.exports = function (dbtype, authService, settings, zipkin) {
 			}
 		});
 	};
+	
+	function getHeader(req) {
+		var header={}
+		if (zipkin)
+		{
+			header=zipkin.toRequestHeader(req, header);
+			// set the parentSpanId to spanId and remove the SpanId 
+			header['X-B3-ParentSpanId']=header['X-B3-SpanId']
+			delete header['X-B3-SpanId']
+
+		}
+		return header
+	}
 	
 	function countItems(dbName, callback /*(error, count)*/) {
 		console.log("Calling count on " + dbName);

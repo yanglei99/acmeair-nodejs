@@ -69,11 +69,11 @@ Assume MongoDB started on 127.0.0.1:27017
 	export ZIPKIN_ENABLE=true
 	export ZIPKIN_HOST= your zipkin collector host
 	
+	
 #### Known issue 
 
 * [If you hit ipv6 issue](https://github.com/tryfer/node-tryfer/pull/38), you can work around it by clone the branch to replace your local node-modules
 
-* Dependency graph is not calculated.
 	
 ### Access Application 
 
