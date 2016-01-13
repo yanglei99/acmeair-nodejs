@@ -1,6 +1,6 @@
 # Acme Air in NodeJS 
 
-An implementation of the Acme Air sample application for NodeJS.  This implementation can support multiple datastores, can run in several application modes, and can support running on a variety of runtime platforms including standalone bare metal  system, Virtual Machines, docker containers, IBM Bluemix, IBM Bluemix Container Service.
+An implementation of the Acme Air benchmark application for NodeJS.  This implementation can support multiple datastores; run in several application modes; offer oeration insights and API management capabilities. It also supports running on a variety of runtime platforms including stand-alone bare-metal system, Virtual Machines, docker containers, IBM Bluemix, IBM Bluemix Container Service, Mesos through Marathon...
 
 ## Content
 
@@ -79,6 +79,8 @@ Assume MongoDB started on 127.0.0.1:27017
 
 	export ENABLE_SWAGGER=true
 	
+	the swagger-ui is at http://host:port/v1
+	
 #### Known issue 
 
 * [If you hit ipv6 issue](https://github.com/tryfer/node-tryfer/pull/38), you can work around it by clone the branch to replace your local node-modules
@@ -116,10 +118,10 @@ MONGO_URL||Mongo database URL. Take precedence over other settings
 CLOUDANT_URL||Cloudant database URL. Take precedence over other settings
 CASSANDRA_CP||Cassandra Contact Points. Take precedence over other settings
 CASSANDRA_KS||Cassandra keyspace. Take precedence over other settings
-ZIPKIN_ENABLE||when set to true, it will enable ZipKin integration
+ENABLE_ZIPKIN||when set to true, it will enable ZipKin integration
 ZIPKIN_HOST|| zipkin collector scribe host. Take precedence over other settings
 ZIPKIN_PORT|| zipkin collector scribe port. Take precedence over other settings
-ENABLE_SWAGGER||when set to true, it will enable Swagger API exploring
+ENABLE_SWAGGER||when set to true, it will enable Swagger API exploring. The swagger-ui is at host:port/v1
 
 ### Configuration for Runtime
 
