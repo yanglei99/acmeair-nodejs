@@ -26,7 +26,7 @@ One NodeJS application. The default mode.
 
 #### Micro-Service
 
-Main NodeJS application delegates to authorization service NodeJS application hosted on host:port, defined in AUTH_SERVICE
+Main NodeJS application delegates to authorization service NodeJS application hosted on host:port, defined in AUTH_SERVICE. 
 
 
 ### Application Run Platforms
@@ -35,6 +35,11 @@ Main NodeJS application delegates to authorization service NodeJS application ho
 * [Docker Instructions] (README_Docker.md)
 * [Bluemix Container Service Instructions] (README_Bluemix_Container.md)
 
+
+### Insights and API Management
+
+* Enable zipkin tracing with ENABLE_ZIPKIN 
+* Enable Swagger API exploring with ENABLE_SWAGGER
 
 ## How to get started
 
@@ -66,14 +71,18 @@ Assume MongoDB started on 127.0.0.1:27017
 
 ### Enable ZipKin tracing for all the scenarios
 
-	export ZIPKIN_ENABLE=true
-	export ZIPKIN_HOST= your zipkin collector host
+	export ENABLE_ZIPKIN=true
+	export ZIPKIN_HOST= your Zipkin collector host
 	
+
+### Enable Swagger API definition for all the scenarios
+
+	export ENABLE_SWAGGER=true
 	
 #### Known issue 
 
 * [If you hit ipv6 issue](https://github.com/tryfer/node-tryfer/pull/38), you can work around it by clone the branch to replace your local node-modules
-
+* The Swagger API definition dummy one from pet store now.
 	
 ### Access Application 
 
@@ -107,10 +116,10 @@ MONGO_URL||Mongo database URL. Take precedence over other settings
 CLOUDANT_URL||Cloudant database URL. Take precedence over other settings
 CASSANDRA_CP||Cassandra Contact Points. Take precedence over other settings
 CASSANDRA_KS||Cassandra keyspace. Take precedence over other settings
-ZIPKIN_ENABLE|false|when set to true, it will enable ZipKin integration
+ZIPKIN_ENABLE||when set to true, it will enable ZipKin integration
 ZIPKIN_HOST|| zipkin collector scribe host. Take precedence over other settings
 ZIPKIN_PORT|| zipkin collector scribe port. Take precedence over other settings
-
+ENABLE_SWAGGER||when set to true, it will enable Swagger API exploring
 
 ### Configuration for Runtime
 

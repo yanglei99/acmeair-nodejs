@@ -93,6 +93,13 @@ if (enableZipkin == "true")
        app.all(settings.contextRoot+"/*", zipkin.trace);
 }
 
+//enabled Swagger or not
+
+if ( process.env.ENABLE_SWAGGER == "true")
+{
+	var swagger = new require("./swagger.js")(express,app, host,port,settings).config();
+}
+
 var routes = new require('./routes/index.js')(dbtype, authService,settings, zipkin);
 var loader = new require('./loader/loader.js')(routes, settings);
 

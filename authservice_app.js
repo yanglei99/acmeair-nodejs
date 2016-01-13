@@ -69,6 +69,14 @@ if (enableZipkin == "true")
        app.all(settings.authContextRoot+'/authtoken/*', zipkin.trace);
 }
 
+//enabled Swagger or not
+
+if ( process.env.ENABLE_SWAGGER == "true")
+{
+	var swagger = new require("./swagger.js")(express,app, host,port,settings).config();
+}
+
+
 
 if (settings.useDevLogger)
 	app.use(morgan('dev'));                     		// log every request to the console
