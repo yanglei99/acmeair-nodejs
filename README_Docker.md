@@ -2,7 +2,7 @@
 
 Docker image is automatically built on [docker hub](https://hub.docker.com/r/yanglei99/acmeair-nodejs/builds/).
 
-You can also revise and use the predefined [marathon json](document/marathon) to run on Mesos cluster.
+You can  revise and run the predefined [marathon json](document/marathon) on Mesos cluster.
 
 	curl -i -H 'Content-Type: application/json' -d@document/marathon/$marathonJob.json $marathonIp:8080/v2/apps
 	or	
