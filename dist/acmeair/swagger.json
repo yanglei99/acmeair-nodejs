@@ -1,0 +1,652 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a AcmeAir NodeJS benchmark application server.  You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).  ",
+        "version": "1.0.0",
+        "title": "AcmeAir NodeJS",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "email": "yanglei@us.ibm.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "host": "localhost",
+    "basePath": "/rest/api",
+    "tags": [
+        {
+            "name": "login",
+            "description": "login and logout the system"
+        },
+        {
+            "name": "customer",
+            "description": "Access to customers"
+        },
+        {
+            "name": "flight",
+            "description": "Access to flights"
+        },
+        {
+            "name": "booking",
+            "description": "Access to bookings"
+        },
+        {
+            "name": "loader",
+            "description": "Operations to pre-load data"
+        },
+        {
+            "name": "config",
+            "description": "Operations to show configuration"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/login": {
+            "post": {
+                "tags": [
+                    "login"
+                ],
+                "summary": "login with userid and password",
+                "description": "login with userid and password",
+                "operationId": "login",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "login credential",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/LoginInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation. TODO: SessionCookie is in cookies"
+                    },
+                    "403": {
+                        "description": "Invalid userid or password"
+                    }
+                },
+                "security": [
+                ]
+            }
+        },
+        "/login/logout": {
+            "post": {
+                "tags": [
+                    "login"
+                ],
+                "summary": "logout with userid and sessionid",
+                "description": "",
+                "operationId": "logout",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Logout credential",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/LogoutInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    }
+                },
+                "security": [ ]
+            }
+        },
+        "/flights/queryflights": {
+            "post": {
+                "tags": [
+                    "flight"
+                ],
+                "summary": "Query flight",
+                "description": "Query flight",
+                "operationId": "queryflights",
+                "consumes": [
+                             "application/json"
+                         ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Search flight criteria ",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/QueryFlight"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/TripFlight"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Invalid login"
+                    }
+                },
+                "security": []
+            }
+        },
+        "/customer/byid/{userId}": {
+            "get": {
+                "tags": [
+                    "customer"
+                ],
+                "summary": "Get cutomer by ID",
+                "description": "Returns a single customer",
+                "operationId": "getCustomerById",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "userId",
+                        "description": "ID of customer to return",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Customer"
+                        }
+                    },
+                    "403": {
+                        "description": "Invalid login"
+                    }
+                },
+                "security": [
+                ]
+            },
+            "post": {
+                "tags": [
+                    "customer"
+                ],
+                "summary": "Update a customer with body",
+                "description": "",
+                "operationId": "putCustomerById",
+                "consumes": [
+                     "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "ID of customer to update",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Updated customer",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Customer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                         "schema": {
+                                "$ref": "#/definitions/Customer"
+                            }
+                    },
+                    "403": {
+                        "description": "Invalid login"
+                    }
+                },
+                "security": []
+            }
+        },
+        "/bookings/bookflights":{
+        	"post":{
+                "tags": [
+                         "booking"
+                     ],
+                     "summary": "Book flights",
+                     "description": "",
+                     "operationId": "bookFlights",
+                     "consumes": [
+                          "application/json"
+                     ],
+                     "produces": [
+                         "application/json"
+                     ],
+                     "parameters": [
+                         {
+                             "in": "body",
+                             "name": "body",
+                             "description": "Booking info",
+                             "required": true,
+                             "schema": {
+                                 "$ref": "#/definitions/BookingInfo"
+                             }
+                         }
+                     ],
+                     "responses": {
+                         "200": {
+                                 "description": "successful operation",
+                                 "schema": {
+                                	 "$ref": "#/definitions/BookingConfirmation"
+                                 }
+                    	 },
+                         "403": {
+                             "description": "Invalid login"                         }
+                     },
+                     "security": [ ]
+
+        	}
+        },
+        "/bookings/cancelbooking":{
+        	"post":{
+                "tags": [
+                         "booking"
+                     ],
+                     "summary": "Cancel booking",
+                     "description": "",
+                     "operationId": "cancleBooking",
+                     "consumes": [
+                          "application/json"
+                     ],
+                     "produces": [
+                         "application/json"
+                     ],
+                     "parameters": [
+                         {
+                             "in": "body",
+                             "name": "body",
+                             "description": "Booking Id",
+                             "required": true,
+                             "schema": {
+                                 "$ref": "#/definitions/BookingId"
+                             }
+                         }
+                     ],
+                     "responses": {
+                         "200": {
+                                 "description": "successful operation"
+                    	 },
+                         "403": {
+                             "description": "Invalid login"                         }
+                     },
+                     "security": [ ]
+
+        	
+        	}
+        	
+        },
+        "/bookings/byuser/{userId}":{
+        	"get":{
+                "tags": [
+                    "booking"
+                ],
+                "summary": "Get booking by customer ID",
+                "description": "Returns all bookings of the customer",
+                "operationId": "getBookingsByUser",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "userId",
+                        "description": "ID of customer",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                        	"type":"array",
+                        	"items":{
+                        		"$ref": "#/definitions/Booking"
+                        	}
+                        }
+                    },
+                    "403": {
+                        "description": "Invalid login"
+                    }
+                },
+                "security": [ ]
+        	}
+        }
+    },
+    "securityDefinitions": {  
+    },
+    "definitions": {
+    	"SessionCookie":{
+    		"type":"object",
+    		"properties":{
+    			"sessionid":{
+                    "type": "string",
+                    "example": "d3fb67ee-ba9c-435f-88ef-6f6768831cc5"
+    			}
+    		}
+    	},
+    	"BookingId":{
+    		"type":"object",
+    		"properties":{
+            	"userid":{
+                    "type": "string",
+                    "example": "uid23@email.com"
+            	},
+            	"number":{
+                    "type": "string",
+                    "example": "d7823edc-6564-4f6b-a5a2-cd69158d3afa"
+            	}
+    		}
+    	},
+    	"BookingConfirmation":{
+    		"type":"object",
+    		"properties":{
+	    		"oneWay":{
+	                "type": "boolean",
+	                "example": false
+	    		},
+	    		"returnBookingId":{
+	                "type": "string",
+	                "example": "d7823edc-6564-4f6b-a5a2-cd69158d3afa"
+	    		},
+	    		"departBookingId":{
+	                "type": "string",
+	                "example": "8b5fc6f9-46fe-4ac0-9219-4f22fe8fdad1"
+	            }
+    		}
+    	},
+    	"BookingInfo":{
+    		"type":"object",
+    		"properties":{
+            	"userid":{
+                    "type": "string",
+                    "example": "uid23@email.com"
+            	},
+            	"toFlightId":{
+                    "type": "string",
+                    "example": "abb520b2-af27-4e12-9c9c-d5b06fcb80eb"
+            	},
+            	"retFlightId":{
+                    "type": "string",
+                    "example": "a24462ba-ffe0-494f-9cfa-45a9dbd18506"
+            	},
+            	"oneWayFlight":{
+            		"type":"boolean",
+            		"example":"false"
+            	}
+    		}
+    	},
+        "Booking": {
+            "type": "object",
+            "properties": {
+            	"_id":{
+                    "type": "string",
+                    "example": "92404ccc-b759-4ac2-9f68-c9fe4033a367"
+            	},
+            	"customerId":{
+                    "type": "string",
+                    "example": "uid23@email.com"
+            	},
+            	"flightId":{
+                    "type": "string",
+                    "example": "abb520b2-af27-4e12-9c9c-d5b06fcb80eb"
+            	},
+            	"dateOfBooking":{
+                    "type": "string",
+                    "example": "2016-01-15T00:47:46.856Z"
+                }
+            }
+        },
+        "Customer": {
+            "type": "object",
+            "properties": {
+            	"_id": {
+                    "type": "string",
+                    "example": "uid0@email.com"
+            	},
+            	"password": {
+                    "type": "string",
+                    "example":"password"
+            	},
+            	"phoneNumber":{
+                    "type": "string",
+                    "example":"919-123-4567q"
+                },
+                "phoneNumberType":{
+                    "type": "string",
+                    "example":"BUSINESS"
+                },
+                "address":{
+                	"$ref": "#/definitions/Address"
+                }
+            }
+        },
+        "Address":{
+        	"type":"object",
+        	"properties":{
+        		"streetAddress1":{
+        			"type": "string",
+        			"example": "123 Main St."
+        		},
+        		"city":{
+        			"type": "string",
+        			"example": "Anytown"
+        		},
+        		"stateProvince":{
+        			"type": "string",
+        			"example": "NC"
+        		},
+        		"country":{
+        			"type": "string",
+        			"example": "USA"
+        		},
+        		"postalCode":{
+        			"type": "string",
+        			"example": "27617"
+        		}
+        	}
+        },
+        "LoginInfo": {
+            "type": "object",
+            "required": [
+                "login",
+                "password"
+            ],
+            "properties": {
+                "login": {
+                    "type": "string",
+                    "example": "uid0@email.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "password"
+                }
+            }
+        },
+        "LogoutInfo": {
+            "type": "object",
+            "required": [
+                "login"
+            ],
+            "properties": {
+                "login": {
+                    "type": "string",
+                    "example": "uid0@email.com"
+                }
+            }
+        },
+        "QueryFlight": {
+            "type": "object",
+            "required": [
+                "fromAirport",
+                "toAirport",
+                "fromDate",
+                "returnDate"
+            ],
+            "properties": {
+                "fromAirport": {
+                    "type": "string",
+                    "example": "RDU"
+                },
+                "toAirport": {
+                    "type": "string",
+                    "example": "PEK"
+                },
+                "fromDate": {
+                    "type": "string",
+                    "example": "Sun+Aug+17+00:00:00+EST+2014"
+                },
+                "returnDate": {
+                    "type": "string",
+                    "example": "Sun+Aug+17+00:00:00+EST+2014"
+                },
+                "oneWay": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "TripFlights":{
+        	"type":"object",
+        	"properties":{
+        		"tripFlights": {
+        			"$ref": "#/definitions/TripFlights"
+                }
+        	}
+        },
+        "TripFlight": {
+            "type": "object",
+            "properties": {
+            	 "numPages":{
+                     "type": "integer",
+                     "example": 1
+            	 },
+            	 "flightsOptions": {
+            		 "type":"array",
+            		 "items":{
+            			 "$ref": "#/definitions/Flight"
+            		 }
+            	 },
+            	 "currentPage":{
+                     "type": "integer",
+                     "example": 0
+            	 },
+            	 "hasMoreOptions":{
+                     "type": "boolean",
+                     "example": false
+            	 },
+            	 "pageSize":{
+                     "type": "integer",
+                     "example": 10
+            	 }
+            }
+        },
+        "Flight": {
+            "type": "object",
+            "properties": {
+            	"_id":{
+            		"type":"string",
+            		"example":"a4f7e015-cf9e-4b58-b7a7-330639072bea"
+            	},
+            	"firstClassBaseCost":{
+            		"type":"integer",
+            		"example":500
+            	},
+            	"economyClassBaseCost":{
+            		"type":"integer",
+            		"example":200
+            	},
+            	"numFirstClassSeats":{
+            		"type":"integer",
+            		"example":10
+            	},
+            	"numEconomyClassSeats":{
+            		"type":"integer",
+            		"example":200
+            	},
+            	"airplaneTypeId":{
+            		"type":"string",
+            		"example":"B747"
+            	},
+            	"flightSegmentId":{
+            		"type":"string",
+            		"example":"AA268"
+            	},
+            	"scheduledDepartureTime":{
+            		"type":"string",
+            		"example":"2016-01-14T05:00:00.000Z"
+            	},
+            	"scheduledArrivalTime":{
+            		"type":"string",
+            		"example":"2016-01-14T11:02:48.000Z"
+            	},
+            	"flightSegment":{
+            		"$ref": "#/definitions/FlightSegment"
+            	}
+            }
+        },
+        "FlightSegment":{
+        	"type":"object",
+        	"properties":{
+        		"_id":{
+            		"type":"string",
+            		"example":"AA268"
+        		},
+        		"originPort":{
+            		"type":"string",
+            		"example":"JFK"
+        		},
+        		"destPort":{
+            		"type":"string",
+            		"example":"CDG"
+        		},
+        		"miles":{
+            		"type":"string",
+            		"example":"3628"
+        		}
+        	}
+        }
+    },
+    "externalDocs": {
+        "description": "Find out more about Swagger",
+        "url": "http://swagger.io"
+    }
+}

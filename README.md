@@ -74,18 +74,21 @@ Assume MongoDB started on 127.0.0.1:27017
 	export ENABLE_ZIPKIN=true
 	export ZIPKIN_HOST= your Zipkin collector host
 	
+#### Known issue 
+
+* [If you hit ipv6 issue](https://github.com/tryfer/node-tryfer/pull/38), you can work around it by clone the branch to replace your local node-modules
 
 ### Enable Swagger API definition for all the scenarios
 
 	export ENABLE_SWAGGER=true
 	
-	the swagger-ui is at http://host:port/v1
+* [The Swagger API definition shown as default](dist/acmeair/swagger.json). [The Swagger API definition for Authentication Service](dist/acmeair/swagger-auth.json) 
+* The swagger-ui is at http://host:port/v1
 	
 #### Known issue 
 
-* [If you hit ipv6 issue](https://github.com/tryfer/node-tryfer/pull/38), you can work around it by clone the branch to replace your local node-modules
-* The Swagger API definition dummy one from pet store now.
-	
+* The Swagger API needs improvements. Especially on how to model sessionid in cookies.
+
 ### Access Application 
 
 	http://localhost:9080/

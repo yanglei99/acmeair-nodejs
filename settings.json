@@ -6,7 +6,7 @@
 	"zipkin_host": "127.0.0.1",
 
 	"authservice_port": 9443,
-	"authContextRoot": "/acmeair-auth-service/rest/api",
+	"authContextRoot": "/rest/api/auth-service",
 		
 	"mongoHost" : "127.0.0.1",
 	"mongoPort" : 27017,
