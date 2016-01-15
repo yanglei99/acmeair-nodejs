@@ -1,0 +1,42 @@
+{
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "yanglei99/acmeair-nodejs",
+      "forcePullImage": true,
+      "network":"BRIDGE",
+      "portMappings": [
+                {
+                    "containerPort": 9080,
+                    "hostPort": 31103,
+                    "servicePort": 0,
+                    "protocol": "tcp"
+                }
+      ]
+    }
+  },
+  "id": "acmeair-web-auth",
+  "instances": 1,
+  "cpus": 0.1,
+  "mem": 128,
+  "uris": [],
+  "env":{ 
+	  "MONGO_URL":"mongodb://mongo.marathon.slave.mesos:31100/acmeair",
+	  "AUTH_SERVICE":"acmeair-auth.marathon.slave.mesos:31102",
+	  "ENABLE_SWAGGER":"true"
+  },
+  "ports": [
+        9080
+    ],
+    "healthChecks": [
+                     {
+                       "path": "/rest/api/checkstatus",
+                       "protocol": "HTTP",
+                       "portIndex": 0,
+                       "gracePeriodSeconds": 60,
+                       "intervalSeconds": 10,
+                       "timeoutSeconds": 20,
+                       "maxConsecutiveFailures": 3
+                     }
+                     ]
+}

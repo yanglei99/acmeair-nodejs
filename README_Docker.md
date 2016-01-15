@@ -1,7 +1,15 @@
 ## Acmeair NodeJS on Docker 
 
+Docker image is automatically built on [docker hub](https://hub.docker.com/r/yanglei99/acmeair-nodejs/builds/).
 
-Assume you have [installed Docker and stared Docker daemon](https://docs.docker.com/installation/)
+You can also revise and use the predefined [marathon json](document/marathon) to run on Mesos cluster.
+
+	curl -i -H 'Content-Type: application/json' -d@document/marathon/$marathonJob.json $marathonIp:8080/v2/apps
+	or	
+	dcos marathon app add document/marathon/$marathonJob.json
+	
+
+You can also use the following instructions to build image and run containers yourself.
 
 ### Run MongoDB container
 
