@@ -39,12 +39,41 @@
         {
             "name": "config",
             "description": "Operations to show configuration"
+        },
+        {
+            "name": "status",
+            "description": "status"
         }
     ],
     "schemes": [
         "http"
     ],
     "paths": {
+    	"/checkstatus":{
+    		"get":{
+                "tags": [
+                    "status"
+                ],
+                "summary": "Check status",
+                "description": "Check status",
+                "operationId": "checkStatus",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation."
+                    }
+                },
+                "security": [
+                ]
+    		}
+    	},
         "/login": {
             "post": {
                 "tags": [

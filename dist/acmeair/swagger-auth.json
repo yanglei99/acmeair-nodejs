@@ -14,18 +14,47 @@
         }
     },
     "host": "localhost",
-    "basePath": "/rest/api/auth-service/authtoken",
+    "basePath": "/rest/api/auth-service",
     "tags": [
         {
             "name": "auth-service",
             "description": "authentication"
+        },
+        {
+            "name": "status",
+            "description": "status"
         }
     ],
     "schemes": [
         "http"
     ],
     "paths": {
-    	"/byuserid/{userId}":{
+    	"/checkstatus":{
+    		"get":{
+                "tags": [
+                    "status"
+                ],
+                "summary": "Check status",
+                "description": "Check status",
+                "operationId": "checkStatus",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation."
+                    }
+                },
+                "security": [
+                ]
+    		}
+    	},
+    	"/authtoken/byuserid/{userId}":{
     		"post":{
                 "tags": [
                     "auth-service"
@@ -67,7 +96,7 @@
             
     		}
     	},
-    	"/{tokenId}":{
+    	"/authtoken/{tokenId}":{
     		"get":{
                 "tags": [
                     "auth-service"
@@ -108,7 +137,7 @@
                 ]
     		}
     	},
-    	"/{token}":{
+    	"/authtoken/{token}":{
     		"delete":{
                 "tags": [
                     "auth-service"

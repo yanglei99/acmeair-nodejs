@@ -85,11 +85,11 @@ var router = express.Router();
 
 router.post('/byuserid/:user', createToken);
 router.get('/:tokenid', validateToken);
-router.get('/status', checkStatus);
 router.delete('/:tokenid', invalidateToken);
 
 // REGISTER OUR ROUTES so that all of routes will have prefix 
 app.use(settings.authContextRoot+'/authtoken', router);
+app.get(settings.authContextRoot+'/checkstatus', checkStatus);
 
 var initialized = false;
 var serverStarted = false;
