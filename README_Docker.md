@@ -8,6 +8,7 @@ You can  revise and run the predefined [marathon json](document/marathon) on Mes
 	or	
 	dcos marathon app add document/marathon/$marathonJob.json
 	
+You can also build [workload docker image](document/workload/Dockerfile) then submit the workload run using [marathon json](document/marathon/acmeair_web_workload.json)
 
 You can also use the following instructions to build image and run containers yourself.
 

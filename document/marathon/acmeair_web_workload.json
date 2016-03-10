@@ -1,0 +1,19 @@
+{
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "yanglei99/acmeair-workload",
+      "network":"HOST",
+      "portMappings": []
+    }
+  },
+  "id": "acmeair-workload",
+  "instances": 1,
+  "cpus": 0.1,
+  "mem": 128,
+  "uris": [],
+  "env":{
+	  "APP_PORT_9080_TCP_ADDR":"acmeair-web.marathon.slave.mesos",
+	  "APP_PORT_9080_TCP_PORT":"31101"
+  }
+}
