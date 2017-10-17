@@ -2,29 +2,51 @@
 
 Docker image is automatically built on [docker hub](https://hub.docker.com/r/yanglei99/acmeair-nodejs/builds/).
 
+
+### To Run on Mesos or Mesosphere DC/OS
+
 You can  revise and run the predefined [marathon json](document/marathon) on Mesos cluster.
 
 	curl -i -H 'Content-Type: application/json' -d@document/marathon/$marathonJob.json $marathonIp:8080/v2/apps
 	or	
 	dcos marathon app add document/marathon/$marathonJob.json
 	
-You can also build [workload docker image](document/workload/Dockerfile) then submit the workload run using [marathon json](document/marathon/acmeair_web_workload.json)
+You can submit the workload run using [marathon json](document/marathon/acmeair_web_workload.json)
 
-You can also use the following instructions to build image and run containers yourself.
 
-### Run MongoDB container
+### To Run on Kubernetes
+
+Verified through [Minikube on OSX](https://kubernetes.io/docs/tutorials/stateless-application/hello-minikube/)
+
+    kubectl run acmeair-mongo --image=mongo --port=27017
+    kubectl expose deployment/acmeair-mongo --type="NodePort" --port 27017
+    
+    # get the service endpoint(MONGO_EP)
+    minikube service acmeair-mongo
+    
+    kubectl run acmeair-web --image=yanglei99/acmeair-nodejs --port=9080 --env "MONGO_URL=mongodb://$MONGO_EP/acmeair"
+    kubectl expose deployment/acmeair-web --type="NodePort" --port 9080
+    
+    # access the web front
+    minikube service acmeair-web
+
+
+### To Build and Run Docker image manually
+
+
+#### Run MongoDB container
 
 	docker run --name mongo_001 -d -P mongo
 	
 	docker ps
 		to get mapped port of 27017, e.g. 49177 
 
-### Create a docker image for Acmeair and run Acmeair container
+#### Create a docker image for Acmeair and run Acmeair container
 
 	docker build -t acmeair/web .
 	
 
-#### Run Acmeair Container in Monolithic
+##### Run Acmeair Container in Monolithic
 
 	docker run -d -P --name acmeair_web_001 --link mongo_001:mongo acmeair/web 
 	
@@ -33,7 +55,7 @@ You can also use the following instructions to build image and run containers yo
 	docker run -d -P --name acmeair_web_002 -e MONGO_URL=mongodb://192.168.59.103:49177/acmeair acmeair/web 
 	
 		
-#### Run Acmeair Containers in Micro-Service
+##### Run Acmeair Containers in Micro-Service
 
 	docker run -d -P --name acmeair_web_003 -e APP_NAME=authservice_app.js --link mongo_001:mongo acmeair/web 
 	
@@ -45,7 +67,7 @@ You can also use the following instructions to build image and run containers yo
 	You can also use the MONGO_URL location as Monolithic case
 
 
-#### Run Acmeair Containers in Micro-Service with Netflix Hystrix Stream enabled
+##### Run Acmeair Containers in Micro-Service with Netflix Hystrix Stream enabled
 
 	docker run -d -P --name acmeair_web_005 -e APP_NAME=authservice_app.js --link mongo_001:mongo acmeair/web 
 	
@@ -57,7 +79,7 @@ You can also use the following instructions to build image and run containers yo
 	You can also use the MONGO_URL location as Monolithic case
 	
 
-#### Get application port
+##### Get application port
 
 	docker ps
 		get the mapped port for 9080 to get the application url. e.g. http://192.168.59.103:49178
@@ -65,7 +87,7 @@ You can also use the following instructions to build image and run containers yo
 	If hystrix is enabled, it is available at : http://192.168.59.103:49178/rest/api/hystrix.stream
 
 	
-#### Note:
+##### Note:
 
 * For Cloudant, you can use CLOUDANT_URL for datasource location
 
@@ -73,6 +95,8 @@ You can also use the following instructions to build image and run containers yo
 ## Run Jmeter workload on Docker 
 
 ### Create a docker image for Jmeter workload
+
+[workload docker image](document/workload/Dockerfile)
 
 	docker build -t acmeair/workload document/workload
 
