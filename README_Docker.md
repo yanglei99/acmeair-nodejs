@@ -16,7 +16,7 @@ You can submit the workload run using [marathon json](document/marathon/acmeair_
 
 ### To Run on Kubernetes
 
-Verified through [Minikube on OSX](https://kubernetes.io/docs/tutorials/stateless-application/hello-minikube/)
+Verified on [Minikube on OSX](https://kubernetes.io/docs/tutorials/stateless-application/hello-minikube/)
 
     kubectl run acmeair-mongo --image=mongo --port=27017
     kubectl expose deployment/acmeair-mongo --port 27017
@@ -27,7 +27,7 @@ Verified through [Minikube on OSX](https://kubernetes.io/docs/tutorials/stateles
     # access the web front
     minikube service acmeair-web
     
-You can also use [yaml files](document/k8s) to create everything at once
+You can also use [yaml files](document/k8s) to create everything together. Also verified on [Bluemix Container Service](https://console.bluemix.net/docs/containers/cs_apps.html#cs_apps)
 
     # Monolithic
 	kubectl create -f document/k8s/acmeair-web.yaml
@@ -35,8 +35,6 @@ You can also use [yaml files](document/k8s) to create everything at once
     # Micro-Services
 	kubectl create -f document/k8s/acmeair-ms.yaml
 
-    # access the web front
-    minikube service acmeair-web
 
 ### To Build and Run Docker image manually
 
