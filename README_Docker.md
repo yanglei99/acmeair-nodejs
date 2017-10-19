@@ -27,7 +27,7 @@ Verified through [Minikube on OSX](https://kubernetes.io/docs/tutorials/stateles
     # access the web front
     minikube service acmeair-web
     
-You can also use [yaml files] (document/k8s) to create everything at once
+You can also use [yaml files](document/k8s) to create everything at once
 
     # Monolithic
 	kubectl create -f document/k8s/acmeair-web.yaml
