@@ -19,17 +19,24 @@ You can submit the workload run using [marathon json](document/marathon/acmeair_
 Verified through [Minikube on OSX](https://kubernetes.io/docs/tutorials/stateless-application/hello-minikube/)
 
     kubectl run acmeair-mongo --image=mongo --port=27017
-    kubectl expose deployment/acmeair-mongo --type="NodePort" --port 27017
+    kubectl expose deployment/acmeair-mongo --port 27017
     
-    # get the service endpoint(MONGO_EP)
-    minikube service acmeair-mongo
-    
-    kubectl run acmeair-web --image=yanglei99/acmeair-nodejs --port=9080 --env "MONGO_URL=mongodb://$MONGO_EP/acmeair"
+    kubectl run acmeair-web --image=yanglei99/acmeair-nodejs --port=9080 --env "MONGO_URL=mongodb://acmeair-mongo:27017/acmeair"
     kubectl expose deployment/acmeair-web --type="NodePort" --port 9080
     
     # access the web front
     minikube service acmeair-web
+    
+You can also use [yaml files] (document/k8s) to create everything at once
 
+    # Monolithic
+	kubectl create -f document/k8s/acmeair-web.yaml
+
+    # Micro-Services
+	kubectl create -f document/k8s/acmeair-ms.yaml
+
+    # access the web front
+    minikube service acmeair-web
 
 ### To Build and Run Docker image manually
 
