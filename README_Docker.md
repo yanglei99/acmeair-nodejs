@@ -35,6 +35,10 @@ You can also use [yaml files](document/k8s) to create everything together. Also 
     # Micro-Services
 	kubectl create -f document/k8s/acmeair-ms.yaml
 
+    # Micro-Services with Ingress
+	kubectl create -f document/k8s/acmeair-ingress.yaml
+	
+
 
 ### To Build and Run Docker image manually
 
