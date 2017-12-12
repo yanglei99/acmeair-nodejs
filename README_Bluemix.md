@@ -1,4 +1,4 @@
-## Acmeair NodeJS on Bluemix 
+## Acmeair NodeJS on Bluemix Cloud Foundry
 
 Assume you have access to [Bluemix](https://console.ng.bluemix.net). 
 

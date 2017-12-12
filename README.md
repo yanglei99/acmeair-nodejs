@@ -31,9 +31,9 @@ Main NodeJS application delegates to authorization service NodeJS application ho
 
 ### Application Run Platforms
 
-* [Bluemix Instructions](README_Bluemix.md)
-* [Docker Instructions](README_Docker.md)
-* [Bluemix Container Service Instructions](README_Bluemix_Container.md)
+* [Bluemix CloudFoudry Instructions](README_Bluemix.md)
+* [Docker on Kubernetes and Mesos Instructions](README_Docker.md)
+* [Obsolete. Bluemix Container Service Instructions](README_Bluemix_Container.md)
 
 
 ### Insights and API Management
