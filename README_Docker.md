@@ -36,7 +36,10 @@ You can also use [yaml files](document/k8s) to create everything together. Also 
 	kubectl create -f document/k8s/acmeair-ms.yaml
 
     # Micro-Services with Ingress
-	kubectl create -f document/k8s/acmeair-ingress.yaml
+	kubectl create -f document/k8s/acmeair-ms-ingress.yaml
+	
+	# Micro-Service with Cluster Federation
+	kubectl create -f document/k8s/acmeair-ms-fed.yaml
 	
 
 
