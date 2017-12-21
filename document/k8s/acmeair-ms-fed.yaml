@@ -70,7 +70,7 @@ spec:
         - name: CLOUDANT_URL
           value: "https://YOUR_CLOUDANT_URL"     
         - name: AUTH_SERVICE
-          value: "acme-auth.default.fellowship:3010" 
+          value: "acme-auth.default.fellowship.svc.example.com:3010" 
 ---
 apiVersion: v1
 kind: Service

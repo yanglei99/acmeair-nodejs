@@ -27,7 +27,7 @@ Verified on [Minikube on OSX](https://kubernetes.io/docs/tutorials/stateless-app
     # access the web front
     minikube service acmeair-web
     
-You can also use [yaml files](document/k8s) to create everything together. Also verified on [IBM Cloud Container Service](https://console.bluemix.net/docs/containers/cs_apps.html#cs_apps)
+You can also use [yaml files](document/k8s) to create everything together. Also verified on [IBM Cloud Container Service](https://console.bluemix.net/docs/containers/cs_apps.html#cs_apps) with [Cluster Federation](https://github.com/yanglei99/kubernetes_ibmcloud/tree/master/federation)
 
     # Monolithic
 	kubectl create -f document/k8s/acmeair-web.yaml
